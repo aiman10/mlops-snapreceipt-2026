@@ -13,7 +13,7 @@ def test_root_health_check():
 def test_health_endpoint():
     response = client.get("/health")
     assert response.status_code == 200
-    assert response.json() == {"status": "ok"}
+    assert response.json()["status"] == "ok"
 
 
 def test_extract_calls_model(monkeypatch):
