@@ -2,8 +2,12 @@ FROM python:3.12-slim
 
 WORKDIR /app
 
-COPY requirements.txt .
-RUN pip install --no-cache-dir -r requirements.txt
+COPY requirements-serve.txt .
+
+# Install the CPU-only build of torch (App Runner has no GPU). Avoids pulling
+# multi-GB CUDA libraries that would bloat the image and slow cold starts.
+RUN pip install --no-cache-dir torch --index-url https://download.pytorch.org/whl/cpu
+RUN pip install --no-cache-dir -r requirements-serve.txt
 
 COPY app.py extract.py config.yml ./
 COPY models/ ./models/

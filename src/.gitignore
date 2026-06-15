@@ -3,3 +3,6 @@ __pycache__/
 *.pyc
 /models
 mlruns/
+*.log
+.pytest_cache/
+mlflow.db

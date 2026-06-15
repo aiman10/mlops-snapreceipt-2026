@@ -1,0 +1,10 @@
+# Runtime-only deps for the serving image (torch installed separately, CPU build).
+# Dev/CI tools (mlflow, dvc-s3, pytest, httpx) intentionally excluded to keep the image lean.
+transformers
+sentencepiece
+protobuf
+pillow
+pyyaml
+python-multipart
+fastapi
+uvicorn

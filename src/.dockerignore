@@ -6,3 +6,7 @@ mlruns/
 *.dvc
 .dvcignore
 pipelines/
+*.log
+.pytest_cache/
+main.py
+requirements.txt
