@@ -19,4 +19,19 @@ ecr_repositories = [
   }
 ]
 
-apprunner_services = []
+apprunner_services = [
+  {
+    key = "mlops-snapreceipt-app"
+    source_configuration = {
+      image_repository = {
+        image_identifier      = "863745572691.dkr.ecr.eu-west-1.amazonaws.com/dev-mlops-snapreceipt-repository:latest"
+        image_repository_type = "ECR"
+        image_configuration = {
+          port = 80
+        }
+      }
+      autodeployments_enabled = true
+    }
+    tags = {}
+  }
+]
