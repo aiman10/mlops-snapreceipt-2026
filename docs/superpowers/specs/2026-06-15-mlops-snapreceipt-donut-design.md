@@ -139,9 +139,12 @@ terraform-ai-project/
   validate → `plan -out=plan.tfout` → **manual-approval gate** → `apply plan.tfout`.
 - **App pipeline (`app-cicd-dev.yml`)** — triggers on PRs touching `src/**` and
   `workflow_dispatch`. Steps: checkout → setup Python → install deps → configure AWS
-  creds → `dvc pull` (fetch weights) → `python main.py` (register to MLflow) → ECR
-  login → docker build (weights bundled) → push image (`latest`) to ECR. App Runner
-  auto-deploys the new image.
+  creds → `dvc pull` (fetch weights) → ECR login → docker build (weights bundled) →
+  push image (`latest`) to ECR. App Runner auto-deploys the new image.
+  *Note:* MLflow registration is **not** run in CI — a GitHub Actions runner cannot
+  reach a local MLflow tracking server, so it would log to throwaway `./mlruns`. The
+  MLflow registry step is demonstrated **locally** as part of Level 1. Logging from
+  CI to a **deployed** MLflow server is a §11 bonus, not the baseline.
 
 This is the project's **Continuous Delivery of the model** ("CT" reframed): because
 Donut is not trained in-loop, the trigger is a weights/code change rather than new
