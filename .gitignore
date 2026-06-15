@@ -17,3 +17,8 @@ src/models/
 *.log
 .terraformrc
 terraform.rc
+
+# Local test receipt images
+test_receipt.png
+IMG_*.jpeg
+IMG_*.jpg

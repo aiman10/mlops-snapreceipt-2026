@@ -64,6 +64,29 @@ def test_single_item_dict_is_normalized_to_list():
     assert result["merchant_name"] == "Water"
 
 
+def test_raw_list_of_lineitems_is_treated_as_menu():
+    raw = [
+        {"nm": "Latte", "cnt": "1", "price": "4.00"},
+        {"nm": "Muffin", "cnt": "1", "price": "2.50"},
+    ]
+    result = map_to_structured(raw)
+    assert result["items"] == [
+        {"description": "Latte", "quantity": 1, "price": 4.00},
+        {"description": "Muffin", "quantity": 1, "price": 2.50},
+    ]
+    assert result["merchant_name"] == "Latte"
+
+
+def test_raw_list_of_sections_is_merged():
+    raw = [
+        {"menu": [{"nm": "Tea", "cnt": "1", "price": "1.00"}]},
+        {"total": {"total_price": "1.00"}},
+    ]
+    result = map_to_structured(raw)
+    assert result["total_amount"] == 1.00
+    assert result["items"] == [{"description": "Tea", "quantity": 1, "price": 1.00}]
+
+
 def test_missing_fields_default_safely():
     result = map_to_structured({})
     assert result["items"] == []

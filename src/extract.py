@@ -43,6 +43,8 @@ def extract_items(menu: list) -> list:
             continue
 
         name = entry.get("nm", "Unknown item")
+        if not isinstance(name, str):
+            name = str(name)
         price = parse_price(entry.get("price"))
         cnt_str = re.sub(r"[^\d]", "", str(entry.get("cnt", "1")))
         quantity = int(cnt_str) if cnt_str else 1
@@ -51,11 +53,14 @@ def extract_items(menu: list) -> list:
         if isinstance(unitprice_val, list):
             for sub in unitprice_val:
                 if isinstance(sub, dict) and sub.get("nm"):
+                    sub_name = sub["nm"]
+                    if not isinstance(sub_name, str):
+                        sub_name = str(sub_name)
                     sub_price = parse_price(sub.get("price"))
                     sub_cnt_str = re.sub(r"[^\d]", "", str(sub.get("cnt", "1")))
                     sub_qty = int(sub_cnt_str) if sub_cnt_str else 1
                     items.append({
-                        "description": sub["nm"],
+                        "description": sub_name,
                         "quantity": sub_qty,
                         "price": sub_price,
                     })
@@ -71,9 +76,27 @@ def extract_items(menu: list) -> list:
     return items
 
 
-def map_to_structured(raw: dict) -> dict:
+def _coerce_raw(raw) -> dict:
+    """token2json may return a list at the top level for complex receipts.
+    Normalise it to a dict: a list of line-items becomes a menu, otherwise
+    the section dicts are merged."""
+    if isinstance(raw, list):
+        dicts = [d for d in raw if isinstance(d, dict)]
+        if dicts and all("nm" in d for d in dicts):
+            return {"menu": dicts}
+        merged = {}
+        for d in dicts:
+            merged.update(d)
+        return merged
+    if isinstance(raw, dict):
+        return raw
+    return {}
+
+
+def map_to_structured(raw) -> dict:
     """Map Donut/CORD-v2 output into the SnapReceipt schema. Pure + deterministic.
     (Donut-only: the DeBERTa `category` field is added by the classifier extension.)"""
+    raw = _coerce_raw(raw)
     menu = raw.get("menu", [])
     if isinstance(menu, dict):
         menu = [menu]
@@ -93,7 +116,7 @@ def map_to_structured(raw: dict) -> dict:
 
     merchant_name = "Unknown"
     if menu and isinstance(menu[0], dict) and menu[0].get("nm"):
-        merchant_name = menu[0]["nm"]
+        merchant_name = str(menu[0]["nm"])
 
     return {
         "merchant_name": merchant_name,
