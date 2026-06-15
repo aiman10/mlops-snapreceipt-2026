@@ -1,0 +1,19 @@
+# Local env / Python
+.venv/
+__pycache__/
+*.pyc
+
+# Terraform
+*.tfstate
+*.tfstate.*
+.terraform/
+.terraform.lock.hcl
+plan.tfout
+
+# DVC-tracked weights (pointer is committed, data is not)
+src/models/
+
+# Secrets / logs
+*.log
+.terraformrc
+terraform.rc
