@@ -22,3 +22,6 @@ terraform.rc
 test_receipt.png
 IMG_*.jpeg
 IMG_*.jpg
+
+# Planning artifacts (kept local, not in the repo)
+docs/superpowers/
