@@ -1,0 +1,8 @@
+model:
+  id: "naver-clova-ix/donut-base-finetuned-cord-v2"
+  task_token: "<s_cord-v2>"
+  local_dir: "models/donut"
+  max_length: 768
+registry:
+  experiment: "Donut Receipt Extraction"
+  model_name: "donut_receipt_extractor"

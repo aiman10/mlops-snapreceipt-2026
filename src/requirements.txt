@@ -1,0 +1,13 @@
+torch
+transformers
+sentencepiece
+protobuf
+pillow
+pyyaml
+python-multipart
+fastapi
+uvicorn
+dvc-s3
+mlflow
+pytest
+httpx

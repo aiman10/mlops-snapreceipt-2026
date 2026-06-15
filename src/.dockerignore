@@ -1,0 +1,8 @@
+.venv/
+__pycache__/
+tests/
+mlruns/
+.dvc/
+*.dvc
+.dvcignore
+pipelines/
