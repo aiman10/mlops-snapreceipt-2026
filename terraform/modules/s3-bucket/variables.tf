@@ -1,7 +1,7 @@
 variable "bucket" {
-    description = "The name of the S3 bucket. Must be globally unique."
-    type        = string
-    default     = null
+  description = "The name of the S3 bucket. Must be globally unique."
+  type        = string
+  default     = null
 }
 
 variable "tags" {
