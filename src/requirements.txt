@@ -9,5 +9,6 @@ fastapi
 uvicorn
 dvc-s3
 mlflow
+datasets
 pytest
 httpx

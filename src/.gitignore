@@ -6,3 +6,4 @@ mlruns/
 *.log
 .pytest_cache/
 mlflow.db
+/eval_data
