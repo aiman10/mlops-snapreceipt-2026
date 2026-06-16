@@ -26,7 +26,7 @@ async def root():
 
 @app.get("/health")
 async def health():
-    return {"status": "ok"}
+    return {"status": "ok", "model": "donut-v1", "build": "cd-demo"}
 
 
 @app.post("/extract")
