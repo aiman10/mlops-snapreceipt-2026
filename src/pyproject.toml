@@ -1,0 +1,4 @@
+[tool.pytest.ini_options]
+markers = [
+    "slow: tests that load the real model (need models/ via dvc pull)",
+]
