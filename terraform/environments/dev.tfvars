@@ -35,3 +35,9 @@ apprunner_services = [
     tags = {}
   }
 ]
+
+# Phase B — MLflow tracking server (firewall locked to your IP).
+# MLflow has no auth, so the security group only admits your machine.
+# Logging happens locally against this server; CI does not reach it.
+enable_mlflow_server = true
+mlflow_allowed_cidr  = "94.226.121.112/32"

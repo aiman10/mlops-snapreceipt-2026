@@ -32,3 +32,15 @@ variable "apprunner_services" {
   type        = list(any)
   default     = []
 }
+
+variable "enable_mlflow_server" {
+  description = "Whether to provision the MLflow tracking server (EC2)"
+  type        = bool
+  default     = false
+}
+
+variable "mlflow_allowed_cidr" {
+  description = "CIDR allowed to reach MLflow on :5000 (0.0.0.0/0 lets GitHub Actions log to it)"
+  type        = string
+  default     = "0.0.0.0/0"
+}
