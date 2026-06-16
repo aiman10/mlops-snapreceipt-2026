@@ -45,6 +45,11 @@ jobs:
       - name: Run unit tests
         run: python -m pytest -m "not slow" -q
 
+      - name: Evaluation gate (block deploy if model scores below threshold)
+        env:
+          EVAL_THRESHOLD: "0.7" # measured field_accuracy on CORD-v2 is ~0.875
+        run: python -m pipelines.gate
+
       - name: Login to Amazon ECR
         id: login-ecr
         uses: aws-actions/amazon-ecr-login@v2

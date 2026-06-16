@@ -18,7 +18,8 @@ def _log_to_mlflow(score: float):
     if not uri:
         logging.info("MLFLOW_TRACKING_URI unset; skipping remote logging.")
         return
-    os.environ.setdefault("MLFLOW_HTTP_REQUEST_TIMEOUT", "10")
+    os.environ.setdefault("MLFLOW_HTTP_REQUEST_TIMEOUT", "5")
+    os.environ.setdefault("MLFLOW_HTTP_REQUEST_MAX_RETRIES", "0")
     try:
         import mlflow
 

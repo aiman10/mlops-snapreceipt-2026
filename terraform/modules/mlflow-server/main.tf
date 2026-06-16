@@ -82,20 +82,24 @@ resource "aws_instance" "mlflow" {
   iam_instance_profile   = aws_iam_instance_profile.mlflow.name
   vpc_security_group_ids = [aws_security_group.mlflow.id]
 
+  root_block_device {
+    volume_size = 30 # GB — full MLflow + deps overflow the 8 GB default
+  }
+
   user_data = <<-EOF
     #!/bin/bash
     set -xe
     dnf install -y python3.11 python3.11-pip
     python3.11 -m venv /opt/mlflow-venv
-    /opt/mlflow-venv/bin/pip install --upgrade pip
-    /opt/mlflow-venv/bin/pip install "mlflow==3.13.0" boto3
+    /opt/mlflow-venv/bin/pip install --no-cache-dir --upgrade pip
+    /opt/mlflow-venv/bin/pip install --no-cache-dir "mlflow==3.13.0" boto3
     cat >/etc/systemd/system/mlflow.service <<'UNIT'
     [Unit]
     Description=MLflow Tracking Server
     After=network-online.target
     Wants=network-online.target
     [Service]
-    ExecStart=/opt/mlflow-venv/bin/mlflow server --host 0.0.0.0 --port 5000 --backend-store-uri sqlite:////opt/mlflow.db --default-artifact-root s3://${var.artifact_bucket}/mlflow
+    ExecStart=/opt/mlflow-venv/bin/mlflow server --host 0.0.0.0 --port 5000 --workers 1 --allowed-hosts "*.compute.amazonaws.com,*.compute.amazonaws.com:5000,localhost,127.0.0.1" --backend-store-uri sqlite:////opt/mlflow.db --default-artifact-root s3://${var.artifact_bucket}/mlflow
     Restart=always
     RestartSec=5
     User=root
