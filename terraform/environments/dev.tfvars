@@ -5,6 +5,10 @@ s3_buckets = [
   {
     key  = "mlops-snapreceipt-datastore-2660"
     tags = {}
+  },
+  {
+    key  = "mlops-snapreceipt-history-2660"
+    tags = {}
   }
 ]
 
